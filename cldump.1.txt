@@ -1,0 +1,107 @@
+.\" man page for cldump
+.\" groff -man -Tascii cldump.1
+.\" $Id: cldump.1 67 2010-11-27 10:20:13Z julien $
+.\"
+.TH cldump 1 "November 2010" Linux "User Manuals"
+.SH NAME
+cldump \- Clarion database extractor
+.SH SYNOPSIS
+.B cldump
+[\fIoptions\fR] database.dat
+.SH DESCRIPTION
+.B cldump
+extracts the data contained in a
+.I Clarion
+database; 
+.I Clarion
+is a Windows IDE similar to
+.I Delphi 
+or others, and has its own (simple) database format.
+
+.B cldump
+can extract the data contained in such a database, and export it to CSV, 
+SQL (including the database schema, keys and indexes) or its own format (this format
+will give you all the meta information, but isn't easily parsable).
+
+A
+.I Clarion
+database consists in a set of files :
+.TP
+.B .DAT
+files contain the data, 
+.TP
+.B .Kxx
+files contain the key/index data,
+.TP
+.B .MEM
+files contain the memo entries associated to the data.
+
+.SH OPTIONS
+
+.TP
+\fB\-x\fR \fIn\fR, \fB\-\-decrypt\fR \fIn\fR
+Decrypt an encrypted file. Required argument \fIn\fR indicates
+the location where the key will be retrieved. Valid values are in
+the range 1 \- 4 inclusive. \fIn\fR = 1 usually works.
+.BR
+
+Decryption happens in-place so \fBKEEP A BACKUP\fR as there is no
+guarantee the decryption process won't fail. Encrypted files must
+be decrypted before they can be dumped.
+.BR
+
+Note that only the data file and the memo file are decrypted in
+this process; key/index files are left untouched as \fBcldump\fR
+doesn't use them.
+.TP
+\fB\-d\fR, \fB\-\-dump\-active\fR
+Dump active entries only
+.TP
+\fB\-D\fR, \fB\-\-dump\-data\fR
+Dump the actual data (active and deleted entries)
+.TP
+\fB\-m\fR, \fB\-\-dump\-meta\fR
+Dump meta information (no SQL or CSV output format exist for this
+option)
+.TP
+\fB\-f\fR \fIc\fR, \fB\-\-field\-separator\fR \fIc\fR
+Set the field separator to character \fIc\fR. Only valid for CSV
+output (see below).
+.TP
+\fB\-c\fR, \fB\-\-csv\fR
+Dump data or schema in CSV format
+.TP
+\fB\-S\fR, \fB\-\-sql\fR
+Dump data or schema in SQL format
+.TP
+\fB\-s\fR, \fB\-\-schema\fR
+Dump database schema
+.TP
+\fB\-M\fR, \fB\-\-mysql\fR
+Use MySQL specific construct (backticks, ...)
+.TP
+\fB\-n\fR, \fB\-\-no\-memo\fR
+Do not dump memo entries
+.TP
+\fB\-U\fR[\fIcharset\fR], \fB\-\-utf8\fR[=\fIcharset\fR]
+Transcode strings and memos from \fIcharset\fR to UTF-8 (\fIcharset\fR defaults
+to ISO8859-1; for the list of supported charsets, see \fBiconv \-\-list\fR)
+
+.SH OUTPUT
+\fBcldump\fR outputs the data to \fIstdout\fR or \fIstderr\fR depending on the
+output format selected, the data to extract and the type of the data (data, meta
+data).
+
+.SH BUGS
+The SQL output could be improved. Not all the types supported by the \fIClarion\fR
+database format are implemented yet (due to lack of test databases using these
+types of data); see the source code for details.
+
+Please report bugs to \fBjb@jblache.org\fR; if possible, please send patches
+as the set of test databases I have is \fBvery\fR limited.
+
+.SH AUTHOR
+\fBcldump\fR was written by Julien BLACHE <jb@jblache.org>.
+
+.SH HOMEPAGE
+http://www.technologeek.org/projects/cldump/
