@@ -1,8 +1,13 @@
 # cldump - Clarion Data Dump
 The Source code for the old Clarion Dump program by Julien Blache
 
-Copyright 2004-2006,2010 Julien BLACHE <jb@jblache.org>
+Copyright 2004-2006,2010 Julien BLACHE <jb@jblache.org> 
 
-This has some minor hacky fixes to deal with quotes in string so that they export correctly in sql.
+- Please do not email the original author for any support, his repos have been down for years.
+
+## Changes
+- This has a hacky fix to deal with quotes in string so that they export correctly for sql.  
+
+
 
 
